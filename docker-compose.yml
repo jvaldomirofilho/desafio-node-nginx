@@ -1,16 +1,10 @@
 version: '3'
 
-networks:
-  node-network:
-    driver: bridge   
-
 services:
   db:
     image: mysql:latest
     command: --innodb-use-native-aio=0
     container_name: db
-    networks:
-      - node-network    
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uuser", "-ppassword"]
       interval: 5s
@@ -33,9 +27,7 @@ services:
       dockerfile: Dockerfile
     container_name: app
     volumes:
-      - ./app:/usr/src/app
-    networks:
-      - node-network       
+      - ./app:/usr/src/app   
     environment:
       - DB_HOST=db
       - DB_USER=admin
@@ -52,11 +44,9 @@ services:
     build:
       context: ./nginx
       dockerfile: Dockerfile
-    container_name: nginx
-    networks:
-      - node-network       
+    container_name: nginx  
     ports:
       - "8080:80"
     depends_on:
       - db
-      - app            
+      - app
