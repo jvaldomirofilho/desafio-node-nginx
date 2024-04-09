@@ -2,15 +2,9 @@ FROM node:21
 
 WORKDIR /usr/src/app
 
-COPY package*.json ./
-
-RUN npm install mysql --save
-
-RUN npm install express --save
+COPY . .
 
 RUN npm install
-
-COPY . .
 
 EXPOSE 3000
 
